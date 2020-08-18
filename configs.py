@@ -1,28 +1,15 @@
-from datetime import datetime
+from datetime import datetime,timedelta
 import ast
 import os
 
 
 class Configs:
-    # Acorns
 
-    # CapitalOne
-
-    # Mohela
-
-    # Nelnet
-
-    # PNC
-    PNC_LINK = "https://www.pnc.com"
-
-    # Slavic
-
-    # Vanguard
-
-    # static sleep time
-    TIME_TO_SLEEP = 5
-
-    TODAYS_DATE = datetime.today().strftime('%Y-%m-%d')
+    #time stuff
+    END_DATE = datetime.today().strftime('%Y-%m-%d')
+    THIRTY_DAYS_FROM_TODAY = datetime.today() - timedelta(days=30)
+    START_DATE = THIRTY_DAYS_FROM_TODAY.strftime('%Y-%m-%d')
+    TODAY = datetime.today().strftime('%Y-%m-%d')
 
     @staticmethod
     def creds_helper(creds):
