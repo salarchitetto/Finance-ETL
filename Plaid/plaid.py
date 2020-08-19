@@ -1,8 +1,5 @@
 from plaid import Client
-from datetime import datetime, timedelta
 from configs import Configs
-from AWS.s3 import S3
-import pandas as pd
 
 
 class Plaid:

@@ -1,9 +1,6 @@
 import pandas as pd
-from Selenium.selenium import Selenium
 from configs import Configs
 from AWS.s3 import S3
-import time
-import os
 
 
 class PNC:
@@ -52,21 +49,7 @@ class PNC:
         :return:
         """
 
-        try:
-            s3 = S3(f"checking_savings_{Configs.TODAY}.parquet",
-                    Configs.creds_helper("BUCKET_NAME")["BUCKET"],
-                    Configs.creds_helper("AWS_KEYS")["ACCESS_KEY_ID"],
-                    Configs.creds_helper("AWS_KEYS")["AWS_SECRET"],
-                    "PNC",
-                    "checking_savings",
-                    self.decompose_accounts())
-
-            print("Uploading data to s3")
-
-            s3.upload_file()
-
-        except Exception as e:
-            print("Something went wrong! : " + str(e))
+        Configs.s3_helper_uploader("PNC", "checking_savings", self.decompose_accounts())
 
     def upload_transactions(self):
         """
@@ -74,21 +57,7 @@ class PNC:
         :return:
         """
 
-        try:
-            s3 = S3(f"checking_savings_{Configs.TODAY}.parquet",
-                    Configs.creds_helper("BUCKET_NAME")["BUCKET"],
-                    Configs.creds_helper("AWS_KEYS")["ACCESS_KEY_ID"],
-                    Configs.creds_helper("AWS_KEYS")["AWS_SECRET"],
-                    "PNC",
-                    "transactions",
-                    self.decompose_transactions())
-
-            print("Uploading data to s3")
-
-            s3.upload_file()
-
-        except Exception as e:
-            print("something went wrong! : " + str(e))
+        Configs.s3_helper_uploader("PNC", "transactions", self.decompose_transactions())
 
     def run_pnc_module(self):
         self.upload_checking_savings()
