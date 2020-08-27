@@ -1,6 +1,5 @@
 import pandas as pd
 from configs import Configs
-from AWS.s3 import S3
 
 
 class Vanguard:
@@ -17,8 +16,10 @@ class Vanguard:
         "IRA" or "Brokerage"
         :return: Datadframe
         """
+
         df = pd.DataFrame(self.plaid_client.accounts()["accounts"])[["subtype", "balances"]]
         df["balances"] = df.apply(lambda row: row.balances["current"], axis=1)
+        df["date"] = Configs.TODAY
 
         return df
 

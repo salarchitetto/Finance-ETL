@@ -1,6 +1,5 @@
 import pandas as pd
 from configs import Configs
-from AWS.s3 import S3
 
 
 class Nelnet:
@@ -17,9 +16,11 @@ class Nelnet:
 
         df = pd.DataFrame(self.plaid_client.accounts()["accounts"])[["name", "balances"]]
         df["balances"] = df.apply(lambda row: row.balances["available"], axis=1)
+        df["date"] = Configs.TODAY
 
-        return df.groupby("name").sum().reset_index()\
-            .rename(columns={"name":"Nelnet Student Loan", "balances": "balance"})
+        return df.groupby(["name", "date"]).sum().reset_index() \
+            .rename(columns={"name": "Nelnet Student Loan", "balances": "balance"}) \
+            [["Nelnet Student Loan", "balance", "date"]]
 
     def upload_nelnet_balance(self):
         """
@@ -36,3 +37,4 @@ class Nelnet:
         """
 
         self.upload_nelnet_balance()
+# plaid_client = Plaid(Configs.creds_helper("NELNET")["ACCESS_KEY"], Configs.creds_helper("PLAID_API_KEYS")["CLIENT_ID"], Configs.creds_helper("PLAID_API_KEYS")["SECRET"], Configs.creds_helper("PLAID_API_KEYS")["PUBLIC_KEY"])

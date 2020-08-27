@@ -1,6 +1,5 @@
 import pandas as pd
 from configs import Configs
-from AWS.s3 import S3
 
 
 class PNC:
@@ -28,6 +27,8 @@ class PNC:
 
         df = pd.DataFrame(self.plaid_client.accounts()["accounts"])[["name", "balances"]]
         df["available_balance"] = df.apply(lambda row: row.balances["available"], axis=1)
+        df["date"] = Configs.TODAY
+
         return df[["name", "available_balance"]]
 
     def decompose_transactions(self):
@@ -41,6 +42,7 @@ class PNC:
         df = pd.DataFrame(self.plaid_client.transactions()["transactions"])[["name", "category", "amount", "date"]]
         # TODO: Come up with a better way to filter the below
         # df["category"] = df.apply(lambda row: row.category[0], axis=1)
+
         return df
 
     def upload_checking_savings(self):
