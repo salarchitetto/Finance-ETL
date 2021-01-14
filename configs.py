@@ -41,9 +41,9 @@ class Configs:
                     str(folder_location),
                     dataframe)
 
-            print("Uploading data to s3")
+            print(f"Uploading {bank} data to s3")
 
             s3.upload_file()
 
         except Exception as e:
-            print("something went wrong! : " + str(e))
+            print(f"something went wrong! : {str(e)}")
